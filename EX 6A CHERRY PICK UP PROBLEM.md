@@ -1,5 +1,5 @@
 # EX 6A CHERRY PICK UP PROBLEM
-## DATE:
+## DATE: 06/05/25
 ## AIM:
 To Create a python program for the following problem statement.
 You are given an n x n grid representing a field of cherries, each cell is one of three possible integers.
@@ -14,11 +14,13 @@ When passing through a path cell containing a cherry, you pick it up, and the ce
 
 
 ## Algorithm
-1. 
-2. 
-3. 
-4.  
-5.   
+
+1. Initialize starting positions
+2. Define recursive state function
+3. Handle base case at last row
+4. Explore all possible next moves
+5. Use memoization to cache results
+
 
 ## Program:
 ```
@@ -26,13 +28,45 @@ When passing through a path cell containing a cherry, you pick it up, and the ce
 To implement the program for Cherry pickup problem.
 
 
-Developed by: 
-Register Number:  
+Developed by: SANTHIYA R
+Register Number:  212223230192
 */
+```
+```
+class Solution(object):
+    def cherryPickup(self, grid):
+        def dp(i, j, k):
+            if (i, j, k) in memo:
+                return memo[(i, j, k)]
+            
+            if i == ROW_NUM - 1:
+                return grid[i][j] + (grid[i][k] if j != k else 0)
+            
+            cherries = grid[i][j] + (grid[i][k] if j != k else 0)
+            
+            max_cherries = 0
+            for dj in [-1, 0, 1]:
+                for dk in [-1, 0, 1]:
+                    next_j, next_k = j + dj, k + dk
+                    if 0 <= next_j < COL_NUM and 0 <= next_k < COL_NUM:
+                        max_cherries = max(max_cherries, dp(i + 1, next_j, next_k))
+            
+            memo[(i, j, k)] = cherries + max_cherries
+            return memo[(i, j, k)]
+        
+        ROW_NUM = len(grid)
+        COL_NUM = len(grid[0])
+        memo = {}
+        return dp(0, 0, COL_NUM - 1)
+
+grid=[[0,1,-1],[1,0,-1],[1,1,1]] 
+obj=Solution()
+print(obj.cherryPickup(grid)+3)
 ```
 
 ## Output:
 
+![image](https://github.com/user-attachments/assets/2de67499-ee43-40c8-88b0-79803c3770cb)
 
 
 ## Result:
